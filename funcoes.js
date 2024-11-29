@@ -112,7 +112,7 @@ const getAlunosPorCurso = function(siglaCurso) {
     };
 };
 
-const getAlunosPorStatus = function (status) {
+const getAlunosPorStatus = function (status_curso) {
     let listaFiltrada = [];
 
     if (!alunosData.alunos || alunosData.alunos.length === 0) {
@@ -120,11 +120,11 @@ const getAlunosPorStatus = function (status) {
     }
 
     alunosData.alunos.forEach((aluno) => {
-        if (aluno.status && aluno.status === status) {
+        if (aluno.status_curso && aluno.status_curso === status_curso) {
             listaFiltrada.push({
                 nome: aluno.nome,
                 matricula: aluno.matricula,
-                status: aluno.status,
+                status: aluno.status_curso,
                 cursos: aluno.curso,
             });
         }

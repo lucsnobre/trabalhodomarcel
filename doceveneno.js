@@ -134,7 +134,6 @@ const getAlunosFiltrados = function (params) {
 app.get('/v1/lion-school/alunos/filtro', (req, res) => {
     const { status, curso, statusDisciplina, ano_conclusao } = req.query;
 
-    // Verifica se ao menos um parâmetro foi passado
     if (!status && !curso && !statusDisciplina && !ano_conclusao) {
         return res.status(400).json({ mensagem: 'Ao menos um parâmetro deve ser fornecido: status, curso, statusDisciplina ou ano_conclusao.' });
     }
