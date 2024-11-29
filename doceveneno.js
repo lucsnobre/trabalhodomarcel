@@ -84,18 +84,65 @@ app.get('/v1/lion-school/alunos/cursos/:curso', async (req, res) => {
     }
 });
 
-// 5. Recupera lista de alunos por status
-app.get('/v1/lion-school/alunos/filtro', (req, res) => {
-    const { status } = req.query;
+const getAlunosFiltrados = function (params) {
+    let listaFiltrada = [];
 
-    if (!status) {
-        return res.status(400).json({ mensagem: 'O parâmetro "status" é obrigatório.' });
+    if (!alunosData.alunos || alunosData.alunos.length === 0) {
+        return { quantidade: 0, alunos: [] };
     }
 
-    const resultado = getAlunosPorStatus(status);
+    alunosData.alunos.forEach((aluno) => {
+        let alunoValido = true;
+
+        // Filtro por status (se fornecido)
+        if (params.status && aluno.status.toLowerCase() !== params.status.toLowerCase()) {
+            alunoValido = false;
+        }
+
+        // Filtro por curso e status da disciplina (se fornecido)
+        if (params.curso && !aluno.curso.some(c => c.sigla.toLowerCase() === params.curso.toLowerCase())) {
+            alunoValido = false;
+        }
+
+        if (params.statusDisciplina && aluno.status.toLowerCase() !== params.statusDisciplina.toLowerCase()) {
+            alunoValido = false;
+        }
+
+        // Filtro por curso e ano de conclusão (se fornecido)
+        if (params.ano_conclusao && !aluno.curso.some(c => c.sigla.toLowerCase() === params.curso.toLowerCase() && c.conclusao == params.ano_conclusao)) {
+            alunoValido = false;
+        }
+
+        // Se o aluno atender a todos os critérios, adiciona à lista filtrada
+        if (alunoValido) {
+            listaFiltrada.push({
+                nome: aluno.nome,
+                matricula: aluno.matricula,
+                status: aluno.status,
+                cursos: aluno.curso,
+            });
+        }
+    });
+
+    return {
+        quantidade: listaFiltrada.length,
+        alunos: listaFiltrada,
+    };
+};
+
+// 5, 6 e 7
+app.get('/v1/lion-school/alunos/filtro', (req, res) => {
+    const { status, curso, statusDisciplina, ano_conclusao } = req.query;
+
+    // Verifica se ao menos um parâmetro foi passado
+    if (!status && !curso && !statusDisciplina && !ano_conclusao) {
+        return res.status(400).json({ mensagem: 'Ao menos um parâmetro deve ser fornecido: status, curso, statusDisciplina ou ano_conclusao.' });
+    }
+
+    const resultado = getAlunosFiltrados({ status, curso, statusDisciplina, ano_conclusao });
 
     if (resultado.quantidade === 0) {
-        return res.status(404).json({ mensagem: 'Nenhum aluno encontrado com o status especificado.' });
+        return res.status(404).json({ mensagem: 'Nenhum aluno encontrado com os parâmetros especificados.' });
     }
 
     res.status(200).json(resultado);
