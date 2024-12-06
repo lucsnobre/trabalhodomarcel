@@ -1,174 +1,148 @@
-// Importação dos dados dos cursos e alunos
-const cursosData = require('./cursos.js');
-const alunosData = require('./alunos.js');
+/**************************************************************************************************************************
+* Objetivo: Atividade final de back-end
+* Data:04/12/2024
+* Autor: Nicolas
+* Versão: 1.0
+***************************************************************************************************************************/
 
-// Função: Recupera todos os cursos
-const getCursos = function() {
-    if (!cursosData || !cursosData.cursos) {
-        return { quantidade: 0, cursos: [] }; // Retorna vazio se os dados não forem encontrados
-    }
+var apiAlunos = require('./alunos.js')
+var apiCursos = require('./cursos.js')
 
-    let listaFormatada = [];
-    
-    // Se houver cursos, formate-os
-    cursosData.cursos.forEach((curso) => {
-        listaFormatada.push({
+const getListaCursos = function() {
+    let listaCursos = apiCursos.cursos
+    let cursosFormatados = listaCursos.map(function(curso) {
+        return {
             nome: curso.nome,
             sigla: curso.sigla,
             icone: curso.icone,
-            carga: curso.carga
-        });
-    });
+            cargaHoraria: curso.carga
+        }
+    })
+    return cursosFormatados
+}
 
-    // Caso a lista de cursos esteja vazia retorna 0
-    if (listaFormatada.length === 0) {
-        return { quantidade: 0, cursos: [] };
-    }
-
-    return {
-        quantidade: listaFormatada.length,
-        cursos: listaFormatada
-    };
-};
-
-
-// Lista todos os alunos
-const getAlunos = function() {
-    let listaFormatada = [];
-    alunosData.alunos.forEach((aluno) => {
-        let cursos = [];
-        aluno.curso.forEach((c) => {
-            cursos.push({
-                nome: c.nome,
-                sigla: c.sigla,
-                conclusao: c.conclusao
-            });
-        });
-        listaFormatada.push({
+const getListaAlunos = function() {
+    let listaAlunos = apiAlunos.alunos
+    let alunosFormatados = listaAlunos.map(function(aluno) {
+        return {
+            foto: aluno.foto,
             nome: aluno.nome,
             matricula: aluno.matricula,
-            status: aluno.status,
-            cursos: cursos
-        });
-    });
+            sexo: aluno.sexo
+        }
+    })
+    return alunosFormatados
+}
 
-    return {
-        quantidade: listaFormatada.length,
-        alunos: listaFormatada
-    };
-};
-
-// Fala as informações de um aluno por matrícula
-const getAlunosPorMatricula = function(matricula) {
+const getAlunoPorMatricula = function(numeroMatricula) {
     let alunoEncontrado = null
+    let listaAlunos = apiAlunos.alunos
 
-    alunosData.alunos.forEach((aluno) => {
-        if (aluno.matricula === matricula) {
-            let cursos = []
-            aluno.curso.forEach((c) => {
-                cursos.push({
-                    nome: c.nome,
-                    sigla: c.sigla,
-                    conclusao: c.conclusao
-                })
-            })
+    listaAlunos.forEach(function(aluno) {
+        if (aluno.matricula == numeroMatricula) {
             alunoEncontrado = {
+                foto: aluno.foto,
                 nome: aluno.nome,
                 matricula: aluno.matricula,
-                status: aluno.status,
-                cursos: cursos
+                sexo: aluno.sexo
             }
         }
     })
-
-    return alunoEncontrado || false;
+    return alunoEncontrado || false
 }
 
-// Lista alunos por curso
 const getAlunosPorCurso = function(siglaCurso) {
-    let listaFiltrada = [];
-    alunosData.alunos.forEach((aluno) => {
-        let alunoTemCurso = false;
+    let listaAlunos = apiAlunos.alunos
+    let alunosFiltrados = []
 
-        aluno.curso.forEach((c) => {
-            if (c.sigla.toUpperCase() === siglaCurso.toUpperCase()) {
-                alunoTemCurso = true;
+    listaAlunos.forEach(function(aluno) {
+        aluno.curso.forEach(function(curso) {
+            if (curso.sigla == siglaCurso) {
+                alunosFiltrados.push({
+                    foto: aluno.foto,
+                    nome: aluno.nome,
+                    matricula: aluno.matricula,
+                    sexo: aluno.sexo
+                })
             }
-        });
+        })
+    })
+    return alunosFiltrados
+}
 
-        if (alunoTemCurso) {
-            listaFiltrada.push({
+const getAlunosPorStatus = function(status) {
+    let listaAlunos = apiAlunos.alunos
+    let alunosFiltrados = []
+
+    listaAlunos.forEach(function(aluno) {
+        if (aluno.status == status) {
+            alunosFiltrados.push({
+                foto: aluno.foto,
                 nome: aluno.nome,
                 matricula: aluno.matricula,
-                status: aluno.status,
-                cursos: aluno.curso
-            });
+                sexo: aluno.sexo
+            })
         }
-    });
+    })
+    return alunosFiltrados
+}
 
-    return {
-        quantidade: listaFiltrada.length,
-        alunos: listaFiltrada
-    };
-};
+const getAlunosPorCursoEStatus = function(siglaCurso, statusDisciplina) {
+    let listaAlunos = apiAlunos.alunos
+    let alunosFiltrados = []
 
-const getAlunosPorStatus = function (status_curso) {
-    let listaFiltrada = [];
+    listaAlunos.forEach(function(aluno) {
+        aluno.curso.forEach(function(curso) {
+            if (curso.sigla == siglaCurso) {
+                curso.disciplinas.forEach(function(disciplina) {
+                    if (disciplina.status == statusDisciplina) {
+                        alunosFiltrados.push({
+                            foto: aluno.foto,
+                            nome: aluno.nome,
+                            matricula: aluno.matricula,
+                            sexo: aluno.sexo
+                        })
+                    }
+                })
+            }
+        })
+    })
+    return alunosFiltrados
+}
 
-    if (!alunosData.alunos || alunosData.alunos.length === 0) {
-        return { quantidade: 0, alunos: [] };
-    }
+const getAlunosPorAnoConclusao = function(siglaCurso, anoConclusao) {
+    let listaAlunos = apiAlunos.alunos
+    let alunosFiltrados = []
 
-    alunosData.alunos.forEach((aluno) => {
-        if (aluno.status_curso && aluno.status_curso === status_curso) {
-            listaFiltrada.push({
-                nome: aluno.nome,
-                matricula: aluno.matricula,
-                status: aluno.status_curso,
-                cursos: aluno.curso,
-            });
-        }
-    });
+    listaAlunos.forEach(function(aluno) {
+        aluno.curso.forEach(function(curso) {
+            if (curso.sigla == siglaCurso && curso.conclusao == anoConclusao) {
+                alunosFiltrados.push({
+                    foto: aluno.foto,
+                    nome: aluno.nome,
+                    matricula: aluno.matricula,
+                    sexo: aluno.sexo
+                })
+            }
+        })
+    })
+    return alunosFiltrados
+}
 
-    return {
-        quantidade: listaFiltrada.length,
-        alunos: listaFiltrada,
-    };
-};
-
-const getAlunosPorCursoEStatus = function (curso, status) {
-    let listaFiltrada = [];
-
-    if (!alunosData.alunos || alunosData.alunos.length === 0) {
-        return { quantidade: 0, alunos: [] };
-    }
-
-    alunosData.alunos.forEach((aluno) => {
-        const alunoPossuiCurso = aluno.curso.some(c => c.sigla === curso);
-        if (alunoPossuiCurso && aluno.status === status) {
-            listaFiltrada.push({
-                nome: aluno.nome,
-                matricula: aluno.matricula,
-                status: aluno.status,
-                cursos: aluno.curso,
-            });
-        }
-    });
-
-    return {
-        quantidade: listaFiltrada.length,
-        alunos: listaFiltrada,
-    };
-};
-
-
-
+//console.log(getListaCursos())
+//console.log(getListaAlunos())
+//console.log(getAlunoPorMatricula("20151001016"))
+//console.log(getAlunosPorCurso('ds'))
+//console.log(getAlunosPorStatus('Cursando'))
+//console.log(getAlunosPorCursoEStatus("ds", "Cursando"))
+//console.log(getAlunosPorAnoConclusao("ds", "2023"));
 
 module.exports = {
-    getCursos,
-    getAlunos,
-    getAlunosPorMatricula,
+    getListaCursos,
+    getListaAlunos,
+    getAlunoPorMatricula,
     getAlunosPorCurso,
     getAlunosPorStatus,
-    getAlunosPorCursoEStatus
-};
+    getAlunosPorCursoEStatus,
+    getAlunosPorAnoConclusao
+}

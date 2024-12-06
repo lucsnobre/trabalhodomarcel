@@ -51,7 +51,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Cursando"
+            "status_curso" : "Cursando"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -105,7 +105,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Cursando"
+            "status_curso" : "Cursando"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
@@ -159,7 +159,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Cursando"
+            "status_curso" : "Cursando"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
@@ -231,7 +231,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Finalizado"
+            "status_curso" : "Finalizado"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -303,7 +303,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Finalizado"
+            "status_curso" : "Finalizado"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -375,7 +375,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Finalizado"
+            "status_curso" : "Finalizado"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -447,7 +447,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Finalizado"
+            "status_curso" : "Finalizado"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -519,7 +519,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Finalizado"
+            "status_curso" : "Finalizado"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-4-avatar-2754580_120522.png",
@@ -573,7 +573,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Cursando"
+            "status_curso" : "Cursando"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
@@ -627,7 +627,7 @@ var alunos = [
                     ]
                 },
             ],
-            "status" : "Cursando"
+            "status_curso" : "Cursando"
         },
         {
             "foto"  : "https://cdn.icon-icons.com/icons2/1879/PNG/512/iconfinder-8-avatar-2754583_120515.png",
